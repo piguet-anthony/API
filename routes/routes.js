@@ -1,5 +1,5 @@
 const express = require('express');
-const filmController = require('../controller/ActorController');
+const actorController = require('../controller/ActorController');
 const genreController = require('../controller/GenreController');
 const filmController = require('../controller/FilmController');
 
