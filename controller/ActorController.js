@@ -1,8 +1,8 @@
 const db = require('../database');
-const FilmRepository = require('../repository/FilmRepository');
+const ActorRepository = require('../repository/ActorRepository');
 
-exports.film_list = (req, res) => {
-    const repo = new FilmRepository(db);
+exports.actor_list = (req, res) => {
+    const repo = new ActorRepository(db);
     repo.list()
         .then((result) => {
             res.json({
@@ -15,8 +15,8 @@ exports.film_list = (req, res) => {
         });
 };
 
-exports.film_get = (req, res) => {
-    const repo = new FilmRepository(db);
+exports.actor_get = (req, res) => {
+    const repo = new ActorRepository(db);
     repo.get(req.params.id)
         .then((result) => {
             res.json({
@@ -29,7 +29,7 @@ exports.film_get = (req, res) => {
         });
 };
 
-exports.film_create = (req, res) => {
+exports.actor_create = (req, res) => {
     const errors = [];
     ['contents', 'done'].forEach((field) => {
         if (!req.body[field]) {
@@ -44,7 +44,7 @@ exports.film_create = (req, res) => {
         return;
     }
 
-    const repo = new FilmRepository(db);
+    const repo = new ActorRepository(db);
 
     repo.create({
         contents: req.body.contents,
@@ -63,7 +63,7 @@ exports.film_create = (req, res) => {
         });
 };
 
-exports.film_update = (req, res) => {
+exports.actor_update = (req, res) => {
     const errors = [];
     ['contents', 'done'].forEach((field) => {
         if (!req.body[field]) {
@@ -78,7 +78,7 @@ exports.film_update = (req, res) => {
         return;
     }
 
-    const repo = new FilmRepository(db);
+    const repo = new ActorRepository(db);
 
     repo.update(
         req.params.id,
@@ -101,8 +101,8 @@ exports.film_update = (req, res) => {
         });
 };
 
-exports.film_delete = (req, res) => {
-    const repo = new FilmRepository(db);
+exports.actor_delete = (req, res) => {
+    const repo = new ActorRepository(db);
 
     repo.delete(req.params.id)
         .then(() => {

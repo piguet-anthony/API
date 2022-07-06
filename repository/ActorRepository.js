@@ -1,19 +1,19 @@
 /* eslint-disable no-console */
 /* eslint-disable func-names */
-class FilmRepository {
+class ActorRepository {
     constructor(database) {
         this.database = database;
     }
 
     list() {
         return new Promise((resolve, reject) => {
-            this.database.all('SELECT * FROM films', [], (err, rows) => {
+            this.database.all('SELECT * FROM actors', [], (err, rows) => {
                 if (err) {
                     console.error(err.message);
                     reject(err);
                 } else {
                     resolve(
-                        rows.map((row) => this.decorator(row)),
+                        rows,
                     );
                 }
             });
@@ -22,7 +22,7 @@ class FilmRepository {
 
     get(id) {
         return new Promise((resolve, reject) => {
-            this.database.get('SELECT * FROM films WHERE id = ?', [id], (err, row) => {
+            this.database.get('SELECT * FROM actors WHERE id = ?', [id], (err, row) => {
                 if (err) {
                     console.error(err.message);
                     reject(err);
@@ -38,7 +38,7 @@ class FilmRepository {
     create(data) {
         return new Promise((resolve, reject) => {
             this.database.run(
-                'INSERT INTO films (contents, done) VALUES (?,?)',
+                'INSERT INTO actors (contents, done) VALUES (?,?)',
                 [data.contents, data.done ? 1 : 0],
                 function (err) {
                     if (err) {
@@ -55,7 +55,7 @@ class FilmRepository {
     update(id, data) {
         return new Promise((resolve, reject) => {
             this.database.run(
-                `UPDATE films
+                `UPDATE actors
                  SET contents = ?,
                      done = ?
                  WHERE id = ?`,
@@ -75,7 +75,7 @@ class FilmRepository {
     delete(id) {
         return new Promise((resolve, reject) => {
             this.database.run(
-                `DELETE FROM films
+                `DELETE FROM actors
                  WHERE id = ?`,
                 [id],
                 (err) => {
@@ -91,12 +91,12 @@ class FilmRepository {
     }
 
     // eslint-disable-next-line class-methods-use-this
-    decorator(films) {
+    /*decorator(actor) {
         return {
-            ...films,
-            done: films.done === 1,
+            ...actor,
+            done: actor.done === 1,
         };
-    }
+    }*/
 }
 
-module.exports = FilmRepository;
+module.exports = ActorRepository;

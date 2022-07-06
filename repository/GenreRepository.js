@@ -1,13 +1,13 @@
 /* eslint-disable no-console */
 /* eslint-disable func-names */
-class FilmRepository {
+class GenreRepository {
     constructor(database) {
         this.database = database;
     }
 
     list() {
         return new Promise((resolve, reject) => {
-            this.database.all('SELECT * FROM films', [], (err, rows) => {
+            this.database.all('SELECT * FROM genres', [], (err, rows) => {
                 if (err) {
                     console.error(err.message);
                     reject(err);
@@ -22,7 +22,7 @@ class FilmRepository {
 
     get(id) {
         return new Promise((resolve, reject) => {
-            this.database.get('SELECT * FROM films WHERE id = ?', [id], (err, row) => {
+            this.database.get('SELECT * FROM genres WHERE id = ?', [id], (err, row) => {
                 if (err) {
                     console.error(err.message);
                     reject(err);
@@ -38,7 +38,7 @@ class FilmRepository {
     create(data) {
         return new Promise((resolve, reject) => {
             this.database.run(
-                'INSERT INTO films (contents, done) VALUES (?,?)',
+                'INSERT INTO genres (contents, done) VALUES (?,?)',
                 [data.contents, data.done ? 1 : 0],
                 function (err) {
                     if (err) {
@@ -55,7 +55,7 @@ class FilmRepository {
     update(id, data) {
         return new Promise((resolve, reject) => {
             this.database.run(
-                `UPDATE films
+                `UPDATE genres
                  SET contents = ?,
                      done = ?
                  WHERE id = ?`,
@@ -75,7 +75,7 @@ class FilmRepository {
     delete(id) {
         return new Promise((resolve, reject) => {
             this.database.run(
-                `DELETE FROM films
+                `DELETE FROM genres
                  WHERE id = ?`,
                 [id],
                 (err) => {
@@ -91,12 +91,12 @@ class FilmRepository {
     }
 
     // eslint-disable-next-line class-methods-use-this
-    decorator(films) {
+    decorator(genre) {
         return {
-            ...films,
-            done: films.done === 1,
+            ...genre,
+            done: genre.done === 1,
         };
     }
 }
 
-module.exports = FilmRepository;
+module.exports = GenreRepository;
