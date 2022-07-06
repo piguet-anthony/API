@@ -13,7 +13,7 @@ class GenreRepository {
                     reject(err);
                 } else {
                     resolve(
-                        rows.map((row) => this.decorator(row)),
+                        rows,
                     );
                 }
             });

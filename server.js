@@ -1,7 +1,5 @@
 var express = require("express");
-const ActorRoute = require('./routes/routes');
-const GenreRoute = require('./routes/routes');
-const FilmRoute = require('./routes/routes');
+const routes = require('./routes/routes');
 
 const app = express();
 
@@ -17,6 +15,4 @@ app.get('/',(req, res) => {
 });
 
 // Routes "genre"
-app.use('/api/actor', ActorRoute);
-app.use('/api/genre', GenreRoute);
-app.use('/api/film', FilmRoute);
+app.use('/api', routes);
