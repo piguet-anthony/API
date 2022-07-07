@@ -28,7 +28,7 @@ class FilmRepository {
                     reject(err);
                 } else {
                     resolve(
-                        this.decorator(row),
+                        row,
                     );
                 }
             });
@@ -38,8 +38,8 @@ class FilmRepository {
     create(data) {
         return new Promise((resolve, reject) => {
             this.database.run(
-                'INSERT INTO films (contents, done) VALUES (?,?)',
-                [data.contents, data.done ? 1 : 0],
+                'INSERT INTO films (name, synopsis, release_year, genre_id) VALUES (?,?,?,?)',
+                [data.name, data.synopsis, data.release_year, data.genre_id],
                 function (err) {
                     if (err) {
                         console.error(err.message);
@@ -56,10 +56,12 @@ class FilmRepository {
         return new Promise((resolve, reject) => {
             this.database.run(
                 `UPDATE films
-                 SET contents = ?,
-                     done = ?
+                 SET name = ?,
+                     synopsis = ?,
+                     release_year = ?,
+                     genre_id = ?
                  WHERE id = ?`,
-                [data.contents, data.done ? 1 : 0, id],
+                 [data.name, data.synopsis, data.release_year, data.genre_id, id],
                 (err) => {
                     if (err) {
                         console.error(err.message);
@@ -94,7 +96,7 @@ class FilmRepository {
     decorator(films) {
         return {
             ...films,
-            done: films.done === 1,
+            //done: films.done === 1,
         };
     }
 }

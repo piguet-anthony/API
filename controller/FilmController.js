@@ -31,7 +31,7 @@ exports.film_get = (req, res) => {
 
 exports.film_create = (req, res) => {
     const errors = [];
-    ['contents', 'done'].forEach((field) => {
+    ['name', 'synopsis', 'release_year', 'genre_id'].forEach((field) => {
         if (!req.body[field]) {
             errors.push(`Field '${field}' is missing from request body`);
         }
@@ -47,8 +47,10 @@ exports.film_create = (req, res) => {
     const repo = new FilmRepository(db);
 
     repo.create({
-        contents: req.body.contents,
-        done: req.body.done === 'true',
+        name: req.body.name,
+        synopsis: req.body.synopsis,
+        release_year: req.body.release_year,
+        genre_id: req.body.genre_id,
     })
         .then((result) => {
             res
@@ -65,7 +67,7 @@ exports.film_create = (req, res) => {
 
 exports.film_update = (req, res) => {
     const errors = [];
-    ['contents', 'done'].forEach((field) => {
+    ['name', 'synopsis', 'release_year', 'genre_id'].forEach((field) => {
         if (!req.body[field]) {
             errors.push(`Field '${field}' is missing from request body`);
         }
@@ -83,8 +85,10 @@ exports.film_update = (req, res) => {
     repo.update(
         req.params.id,
         {
-            contents: req.body.contents,
-            done: req.body.done === 'true',
+            name: req.body.name,
+            synopsis: req.body.synopsis,
+            release_year: req.body.release_year,
+            genre_id: req.body.genre_id,
         },
     )
         .then(() => {

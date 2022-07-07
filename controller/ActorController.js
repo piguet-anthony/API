@@ -19,10 +19,14 @@ exports.actor_get = (req, res) => {
     const repo = new ActorRepository(db);
     repo.get(req.params.id)
         .then((result) => {
-            res.json({
-                success: true,
-                data: result,
-            });
+            if(result == '404'){
+                res.status(404).json({ error: "Erreur identifiant non valide" });
+            }else{
+                res.json({
+                    success: true,
+                    data: result,
+                });
+            }
         })
         .catch((err) => {
             res.status(404).json({ error: err.message });
@@ -31,7 +35,7 @@ exports.actor_get = (req, res) => {
 
 exports.actor_create = (req, res) => {
     const errors = [];
-    ['contents', 'done'].forEach((field) => {
+    ['first_name', 'last_name', 'date_of_birth', 'date_of_death'].forEach((field) => {
         if (!req.body[field]) {
             errors.push(`Field '${field}' is missing from request body`);
         }
@@ -47,8 +51,10 @@ exports.actor_create = (req, res) => {
     const repo = new ActorRepository(db);
 
     repo.create({
-        contents: req.body.contents,
-        done: req.body.done === 'true',
+        first_name: req.body.first_name,
+        last_name: req.body.last_name,
+        date_of_birth: req.body.date_of_birth,
+        date_of_death: req.body.date_of_death,
     })
         .then((result) => {
             res
@@ -65,7 +71,7 @@ exports.actor_create = (req, res) => {
 
 exports.actor_update = (req, res) => {
     const errors = [];
-    ['contents', 'done'].forEach((field) => {
+    ['first_name', 'last_name', 'date_of_birth', 'date_of_death'].forEach((field) => {
         if (!req.body[field]) {
             errors.push(`Field '${field}' is missing from request body`);
         }
@@ -83,8 +89,10 @@ exports.actor_update = (req, res) => {
     repo.update(
         req.params.id,
         {
-            contents: req.body.contents,
-            done: req.body.done === 'true',
+            first_name: req.body.first_name,
+            last_name: req.body.last_name,
+            date_of_birth: req.body.date_of_birth,
+            date_of_death: req.body.date_of_death,
         },
     )
         .then(() => {

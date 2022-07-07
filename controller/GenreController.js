@@ -31,7 +31,7 @@ exports.genre_get = (req, res) => {
 
 exports.genre_create = (req, res) => {
     const errors = [];
-    ['contents', 'done'].forEach((field) => {
+    ['name'].forEach((field) => {
         if (!req.body[field]) {
             errors.push(`Field '${field}' is missing from request body`);
         }
@@ -47,8 +47,7 @@ exports.genre_create = (req, res) => {
     const repo = new GenreRepository(db);
 
     repo.create({
-        contents: req.body.contents,
-        done: req.body.done === 'true',
+        name: req.body.name,
     })
         .then((result) => {
             res
@@ -109,6 +108,7 @@ exports.genre_delete = (req, res) => {
             res.status(204)
                 .json({
                     success: true,
+                    message : "genre supprimé avec succès",
                 });
         })
         .catch((err) => {

@@ -40,7 +40,8 @@ const db = new sqlite3.Database(DBSOURCE, (errConnect) => {
                 } else {
                 // Table just created, creating some rows
                     const insertActors = 'INSERT INTO actors (first_name, last_name, date_of_birth, date_of_death) VALUES (?,?,?,?)';
-                    db.run(insertActors, ['Jean','Dujardin','1972-07-19','']);
+                    db.run(insertActors, ['Jean','Dujardin','1972-07-19',null]);
+                    db.run(insertActors, ['Tom', 'Cruise', '1962-07-03', null]);
                 }
             },
         );
@@ -60,6 +61,7 @@ const db = new sqlite3.Database(DBSOURCE, (errConnect) => {
                 // Table just created, creating some rows
                     const insertFilms = 'INSERT INTO films (name, synopsis, release_year, genre_id) VALUES (?,?,?,?)';
                     db.run(insertFilms, ['OSS117','Agent Secret','','1']);
+                    db.run(insertFilms, ['Top Gun', 'Y a des gros avions c\'est beau', '2022', 1]);
                 }
             },
         );
@@ -79,6 +81,7 @@ const db = new sqlite3.Database(DBSOURCE, (errConnect) => {
                 // Table just created, creating some rows
                     const insertFilms_actors = 'INSERT INTO films_actors (film_id, actor_id) VALUES (?,?)';
                     db.run(insertFilms_actors, ['1','1']);
+                    db.run(insertFilms_actors, ['2','2']);
                 }
             },
         );

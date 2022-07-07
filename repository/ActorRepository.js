@@ -26,9 +26,11 @@ class ActorRepository {
                 if (err) {
                     console.error(err.message);
                     reject(err);
-                } else {
+                }else if(row == null){
+                    resolve('404');
+                }else {
                     resolve(
-                        this.decorator(row),
+                        row,
                     );
                 }
             });
@@ -38,8 +40,8 @@ class ActorRepository {
     create(data) {
         return new Promise((resolve, reject) => {
             this.database.run(
-                'INSERT INTO actors (contents, done) VALUES (?,?)',
-                [data.contents, data.done ? 1 : 0],
+                'INSERT INTO actors (first_name, last_name, date_of_birth, date_of_death) VALUES (?,?,?,?)',
+                [data.first_name, data.last_name, data.date_of_birth, data.date_of_death],
                 function (err) {
                     if (err) {
                         console.error(err.message);
@@ -56,10 +58,12 @@ class ActorRepository {
         return new Promise((resolve, reject) => {
             this.database.run(
                 `UPDATE actors
-                 SET contents = ?,
-                     done = ?
+                 SET first_name = ?,
+                     last_name = ?,
+                     date_of_birth = ?,
+                     date_of_death = ?
                  WHERE id = ?`,
-                [data.contents, data.done ? 1 : 0, id],
+                 [data.first_name, data.last_name, data.date_of_birth, data.date_of_death, id],
                 (err) => {
                     if (err) {
                         console.error(err.message);
@@ -91,12 +95,12 @@ class ActorRepository {
     }
 
     // eslint-disable-next-line class-methods-use-this
-    /*decorator(actor) {
+    decorator(actor) {
         return {
             ...actor,
-            done: actor.done === 1,
+            //done: actor.done === 1,
         };
-    }*/
+    }
 }
 
 module.exports = ActorRepository;
