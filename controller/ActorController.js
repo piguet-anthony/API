@@ -1,3 +1,4 @@
+const md5 = require('md5');
 const db = require('../database');
 const ActorRepository = require('../repository/ActorRepository');
 
@@ -22,10 +23,12 @@ exports.actor_get = (req, res) => {
             if(result == '404'){
                 res.status(404).json({ error: "Erreur identifiant non valide" });
             }else{
-                res.json({
-                    success: true,
-                    data: result,
-                });
+                const etag = md5(JSON.stringify(result));
+                res.set('ETag', etag)
+                    .json({
+                        success: true,
+                        data: result,
+                    });
             }
         })
         .catch((err) => {
@@ -85,7 +88,16 @@ exports.actor_update = (req, res) => {
     }
 
     const repo = new ActorRepository(db);
-
+    let etag = '';
+    repo.get(req.params.id)
+        .then((result) => {
+            etag = md5(JSON.stringify(result));
+        })
+        .catch((err) => {
+            res.status(404).json({ error: err.message });
+        });
+    //console.log(req.get('If-Match'));
+   
     repo.update(
         req.params.id,
         {
@@ -101,10 +113,16 @@ exports.actor_update = (req, res) => {
                     if(result == '404'){
                         res.status(404).json({ error: "Erreur identifiant non valide" });
                     }else{
-                        res.json({
-                            success: true,
-                            data: result,
-                        });
+                        const match = req.get('If-Match')
+                        console.log(match, etag);
+                        if (match == etag) {
+                            res.json({
+                                success: true,
+                                data: result,
+                            });
+                        } else {
+                            res.status(412).json({ error: 'ETag non valide, des modifications ont déjà été apportées' });
+                        }
                     }
                 });
         })

@@ -1,3 +1,4 @@
+var md5 = require('md5');
 var express = require("express");
 
 const HTTP_PORT = 8000;

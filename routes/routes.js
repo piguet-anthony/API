@@ -1,3 +1,4 @@
+const md5 = require('md5');
 const express = require('express');
 const actorController = require('../controller/ActorController');
 const genreController = require('../controller/GenreController');
