@@ -35,8 +35,8 @@ exports.actor_get = (req, res) => {
 
 exports.actor_create = (req, res) => {
     const errors = [];
-    ['first_name', 'last_name', 'date_of_birth'].forEach((field) => {
-        if (!req.body[field]) {
+    ['first_name', 'last_name', 'date_of_birth', 'date_of_death'].forEach((field) => {
+        if (!req.body.hasOwnProperty(field)) {
             errors.push(`Le champs '${field}' est manquant dans le corps de votre requête`);
         }
     });
@@ -71,8 +71,8 @@ exports.actor_create = (req, res) => {
 
 exports.actor_update = (req, res) => {
     const errors = [];
-    ['first_name', 'last_name', 'date_of_birth'].forEach((field) => {
-        if (!req.body[field]) {
+    ['first_name', 'last_name', 'date_of_birth', 'date_of_death'].forEach((field) => {
+        if (!req.body.hasOwnProperty(field)) {
             errors.push(`Le champs '${field}' est manquant dans le corps de votre requête`);
         }
     });
