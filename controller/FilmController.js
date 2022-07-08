@@ -1,3 +1,4 @@
+const md5 = require('md5');
 const db = require('../database');
 const FilmRepository = require('../repository/FilmRepository');
 
@@ -22,10 +23,12 @@ exports.film_get = (req, res) => {
             if(result == '404'){
                 res.status(404).json({ error: "Erreur identifiant non valide" });
             }else{
-                res.json({
-                    success: true,
-                    data: result,
-                });
+                const etag = md5(JSON.stringify(result));
+                res.set('ETag', etag)
+                    .json({
+                        success: true,
+                        data: result,
+                    });
             }
         })
         .catch((err) => {
