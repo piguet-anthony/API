@@ -19,10 +19,14 @@ exports.film_get = (req, res) => {
     const repo = new FilmRepository(db);
     repo.get(req.params.id)
         .then((result) => {
-            res.json({
-                success: true,
-                data: result,
-            });
+            if(result == '404'){
+                res.status(404).json({ error: "Erreur identifiant non valide" });
+            }else{
+                res.json({
+                    success: true,
+                    data: result,
+                });
+            }
         })
         .catch((err) => {
             res.status(404).json({ error: err.message });
@@ -33,7 +37,7 @@ exports.film_create = (req, res) => {
     const errors = [];
     ['name', 'synopsis', 'release_year', 'genre_id'].forEach((field) => {
         if (!req.body[field]) {
-            errors.push(`Field '${field}' is missing from request body`);
+            errors.push(`Le champs '${field}' est manquant dans le corps de votre requête`);
         }
     });
     if (errors.length) {
@@ -69,7 +73,7 @@ exports.film_update = (req, res) => {
     const errors = [];
     ['name', 'synopsis', 'release_year', 'genre_id'].forEach((field) => {
         if (!req.body[field]) {
-            errors.push(`Field '${field}' is missing from request body`);
+            errors.push(`Le champs '${field}' est manquant dans le corps de votre requête`);
         }
     });
     if (errors.length) {
@@ -94,10 +98,14 @@ exports.film_update = (req, res) => {
         .then(() => {
             repo.get(req.params.id)
                 .then((result) => {
-                    res.json({
-                        success: true,
-                        data: result,
-                    });
+                    if(result == '404'){
+                        res.status(404).json({ error: "Erreur identifiant non valide" });
+                    }else{
+                        res.json({
+                            success: true,
+                            data: result,
+                        });
+                    }
                 });
         })
         .catch((err) => {
@@ -109,12 +117,16 @@ exports.film_delete = (req, res) => {
     const repo = new FilmRepository(db);
 
     repo.delete(req.params.id)
-        .then(() => {
+    .then((result) => {
+        if(result == '404'){
+            res.status(404).json({ error: "Erreur identifiant non valide" });
+        }else{
             res.status(204)
                 .json({
                     success: true,
                 });
-        })
+        }
+    })
         .catch((err) => {
             res.status(400).json({ error: err.message });
         });

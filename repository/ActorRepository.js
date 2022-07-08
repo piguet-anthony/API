@@ -78,6 +78,14 @@ class ActorRepository {
 
     delete(id) {
         return new Promise((resolve, reject) => {
+            this.database.get('SELECT * FROM actors WHERE id = ?', [id], (err, row) => {
+                if (err) {
+                    console.error(err.message);
+                    reject(err);
+                }else if(row == null){
+                    resolve('404');
+                }
+            });            
             this.database.run(
                 `DELETE FROM actors
                  WHERE id = ?`,

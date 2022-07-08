@@ -33,7 +33,7 @@ exports.genre_create = (req, res) => {
     const errors = [];
     ['name'].forEach((field) => {
         if (!req.body[field]) {
-            errors.push(`Field '${field}' is missing from request body`);
+            errors.push(`Le champs '${field}' est manquant dans le corps de votre requête`);
         }
     });
     if (errors.length) {
@@ -66,7 +66,7 @@ exports.genre_update = (req, res) => {
     const errors = [];
     ['contents', 'done'].forEach((field) => {
         if (!req.body[field]) {
-            errors.push(`Field '${field}' is missing from request body`);
+            errors.push(`Le champs '${field}' est manquant dans le corps de votre requête`);
         }
     });
     if (errors.length) {
@@ -104,12 +104,15 @@ exports.genre_delete = (req, res) => {
     const repo = new GenreRepository(db);
 
     repo.delete(req.params.id)
-        .then(() => {
-            res.status(204)
-                .json({
-                    success: true,
-                    message : "genre supprimé avec succès",
-                });
+        .then((result) => {
+            if(result == '404'){
+                res.status(404).json({ error: "Erreur identifiant non valide" });
+            }else{
+                res.status(204)
+                    .json({
+                        success: true,
+                    });
+            }
         })
         .catch((err) => {
             res.status(400).json({ error: err.message });

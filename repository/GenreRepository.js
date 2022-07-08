@@ -74,6 +74,14 @@ class GenreRepository {
 
     delete(id) {
         return new Promise((resolve, reject) => {
+            this.database.get('SELECT * FROM genres WHERE id = ?', [id], (err, row) => {
+                if (err) {
+                    console.error(err.message);
+                    reject(err);
+                }else if(row == null){
+                    resolve('404');
+                }
+            }); 
             this.database.run(
                 `DELETE FROM genres
                  WHERE id = ?`,
